@@ -1,5 +1,3 @@
-# from wavemix_lite import WaveMixLiteImageClassification
-
 from variational_auto_encoder import VariationalAutoEncoder
 
 import torch
@@ -51,9 +49,11 @@ test_loader = torch.utils.data.DataLoader(test_data,
 print(len(train_data.classes))
 
 # Set the model
-model = VariationalAutoEncoder(input_dim=(28,28,1), latent_z_dim=2,
-                                enc_conv_filters=[32,64,64,64], enc_conv_kernel=[3,3,3,3], enc_conv_strides=[1,2,2,1], enc_conv_pad=[1,1,1,1],
-                                dec_convt_filters=[64,64,32,1], dec_convt_kernel=[3,3,3,3], dec_convt_strides=[1,2,2,1], dec_convt_pad=[1,1,1,1]).to(device)
+model = VariationalAutoEncoder(input_dim=config['model']['input_dim'], latent_z_dim=config['model']['latent_z_dim'],
+                                enc_conv_filters=config['model']['enc_conv_filters'], enc_conv_kernel=config['model']['enc_conv_kernel'],
+                                enc_conv_strides=config['model']['enc_conv_strides'], enc_conv_pad=config['model']['enc_conv_pad'],
+                                dec_convt_filters=config['model']['dec_convt_filters'], dec_convt_kernel=config['model']['dec_convt_kernel'],
+                                dec_convt_strides=config['model']['dec_convt_strides'], dec_convt_pad=config['model']['dec_convt_pad']).to(device)
 print(model, device)
 
 # Set the criterion and optimizer
@@ -90,7 +90,7 @@ def train(epoch, train_loader, optimizer):
 
     # loss
     train_loss += loss.item()
-    train_num += 1
+    train_num += inputs.size(0)
     
     if i % config['others']['log_period'] == 0 and i != 0:
       print(f'[{epoch}, {i}]\t Train loss: {train_loss / train_num:.3f}')

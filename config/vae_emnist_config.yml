@@ -3,7 +3,7 @@ data:
   seed: 777
   data_path: '~/.pytorch/EMNIST_data/'
   download: True
-  batch_size: 32
+  batch_size: 1024
   shuffle: True
   drop_last: True
   download: True
@@ -12,15 +12,20 @@ data:
 
 # Model parameters
 model:
-  num_class: 365
-  num_block: 7
-  dim_channel: 128
-  mul_factor: 2
-  dropout: 0.5
+  input_dim: [28,28,1]
+  latent_z_dim: 2
+  enc_conv_filters: [32,64,64,64]
+  enc_conv_kernel: [3,3,3,3]
+  enc_conv_strides: [1,2,2,1]
+  enc_conv_pad: [1,1,1,1]
+  dec_convt_filters: [64,64,32,1]
+  dec_convt_kernel: [3,4,4,3]
+  dec_convt_strides: [1,2,2,1]
+  dec_convt_pad: [1,1,1,1]
 
 # Training parameters
 train:
-  epochs: 100
+  epochs: 300
   lr: 0.001
   betas: [0.9, 0.999]
   eps: 0.00000001
@@ -28,8 +33,8 @@ train:
 
 # Save
 save:
-  model_name: 'celebA'
+  model_name: 'emnist'
 
 # Other parameters
 others:
-  log_period: 50
+  log_period: 10
